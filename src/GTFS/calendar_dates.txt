@@ -1,0 +1,5 @@
+service_id,date,exception_type
+D_V42,20181225,1
+L_V42,20181225,2
+D_V42,20190101,1
+L_V42,20190101,2
