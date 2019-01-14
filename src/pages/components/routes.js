@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import UploadFile from '../../upload-file';
 import RoutesFile from '../../GTFS/routes.txt';
 import Container from './container';
+import { SetRoutes, SetRoute } from '../../store/actions/routes'
+import { connect } from 'react-redux';
 
-const Route = (props) => <li className="list-group-item">{props.name}</li>;
+const Route = (props) => <li  onClick={ (e) =>  { 
+    e.preventDefault();
+    props.selectRoute(props.route);
+    }
+  } className="list-group-item"><span className="badge badge-pill badge-primary mr-2" style={{backgroundColor: `#${props.route.route_color}`}}>{props.route.route_id}</span>{props.route.route_long_name}</li>;
 
 class RouteFilter extends Component {
   
@@ -19,30 +25,43 @@ class RouteFilter extends Component {
 }
 class RouteList extends Component {
   
+  constructor () {
+    super();
+   
+    this.selectRoute = this.selectRoute.bind(this)
+  }
   filter (routes) {
     if (!this.props.filter) {
       return routes
     }
-    return routes.filter((route) =>  route.route_long_name ? route.route_long_name.toLowerCase().indexOf(this.props.filter.toLowerCase()) >= 0 : route)
+    return routes.filter((route) =>  ( route.route_id  && route.route_long_name ) ? (route.route_id.toLowerCase().indexOf(this.props.filter.toLowerCase()) >= 0 || route.route_long_name.toLowerCase().indexOf(this.props.filter.toLowerCase()) >= 0 )  : route)
   }
+
+  selectRoute = (route) => {
+   
+    this.props.SetRoute(route);
+
+  }
+
   render () {
     return (
-        <ul className="list-group" id="myList">
-          {   this.filter(this.props.routes)
-              .map((route, i) => <Route key={i} name={route.route_long_name}></Route>)}
-        </ul>
+      <ul className="list-group" id="myList">
+        {   this.filter(this.props.routes)
+            .map((route, i) => <Route key={i} route={route} selectRoute={this.selectRoute}></Route>)}
+      </ul>
     )
   }
 };
 
-export default class Routes extends Component {
+class Routes extends Component {
   
   constructor () {
     super();
    
     this.state = {
       routes: [],
-      filter: ''
+      filter: '',
+      routeSelected: null,
     };
   }
 
@@ -65,9 +84,18 @@ export default class Routes extends Component {
     this.setState({
       routes: data
     })
+    this.props.SetRoutes(data);
+
+  }
+  selectRoute = (route) => {
+
+    this.setState({
+      route
+    })
   }
   
   render () {
+
 
     return (
       <Container>
@@ -75,10 +103,17 @@ export default class Routes extends Component {
           <div>
             <RouteFilter updateSearch={this.updateSearch.bind(this)} searchText={this.state.filter} />
             <br/>
-            <RouteList filter={this.state.filter} routes={this.state.routes}></RouteList>
+            <RouteList filter={this.state.filter} routes={this.props.routes} SetRoute={this.props.SetRoute}></RouteList>
           </div>
         }
       </Container>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    routes: state.routes.routes,
+    route: state.routes.route,
+  }
+}
+export default connect(state => ( mapStateToProps), { SetRoutes, SetRoute })(Routes);

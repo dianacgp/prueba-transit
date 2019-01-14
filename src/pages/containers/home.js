@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import HomeLayout from '../components/home-layout';
-import Travels from '../components/travels'
+import Travels from '../components/travels';
 
 class Home extends Component {
 
@@ -9,7 +9,6 @@ class Home extends Component {
      
       <HomeLayout>
         <Travels/>
-
       </HomeLayout>
 
     )

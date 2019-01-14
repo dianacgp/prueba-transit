@@ -2,15 +2,27 @@
 import React, { Component } from 'react';
 import Nav from '../components/nav';
 import TabContent from '../components/tab-content'
+import { connect } from 'react-redux';
 
-function Travels (props) {
+class Travels extends Component {
 
-  return(
-    <div className='col-md-6'>
-      <Nav/>
-      <TabContent/>
-    </div>
-  );
+	render() {
+
+		const { route } = this.props;
+
+	  return(
+	    <div className='col-md-6'>
+	      <h1>{ route !== null && `Recorrido ${route.route_id}`}</h1>
+	      <Nav/>
+	      <TabContent/>
+	    </div>
+	  );
+	}
 }
+const mapStateToProps = state => {
+  return {
+    route: state.routes.route,
+  }
+}
+export default connect(state => ( mapStateToProps), { })(Travels);
 
-export default Travels;
