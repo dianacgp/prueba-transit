@@ -7,25 +7,39 @@ const InitialState = Record({
   form_error: false,
 
   routes: new List(),
-  routes_refreshing: false,
-  routes_loaded: false,
-  routes_error: false,
+
+  shapes: new List(),
+
+  trips: new List(),
 
   route: null
 
 
 });
 const initialState = new InitialState();
-let result =  [];
 
 export const routes = (state = initialState, action) => {
 	if (!(state instanceof InitialState)) return initialState.mergeDeep(state);
 	switch (action.type) {
 
     case actions.SET_ROUTES: 
-  
+      //console.log('en SET_ROUTES',  action.payload)
       return state.merge({
         routes: action.payload,
+      });
+
+
+    case actions.SET_SHAPES: 
+      //console.log('en SET_SHAPES',  action.payload)
+      return state.merge({
+        shapes: action.payload,
+      });
+
+
+    case actions.SET_TRIPS: 
+      //console.log('en SET_TRIPS',  action.payload)
+      return state.merge({
+        trips: action.payload,
       });
 
     case actions.SET_ROUTE: 

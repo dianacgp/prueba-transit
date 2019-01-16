@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import UploadFile from '../../upload-file';
-import RoutesFile from '../../GTFS/routes.txt';
+import UploadFile from '../upload-file';
+import RoutesFile from '../GTFS/routes.txt';
 import Container from './container';
-import { SetRoutes, SetRoute } from '../../store/actions/routes'
+import { SetRoutes, SetRoute } from '../store/actions/routes'
 import { connect } from 'react-redux';
+import { auth, db } from '../firebase';
 
 const Route = (props) => <li  onClick={ (e) =>  { 
     e.preventDefault();
@@ -25,11 +26,21 @@ class RouteFilter extends Component {
 }
 class RouteList extends Component {
   
-  constructor () {
-    super();
-   
+  constructor (props) {
+    super(props);
+    
+    this.state = {
+      routes: props.routes,
+    };
+
     this.selectRoute = this.selectRoute.bind(this)
   }
+
+  componentWillReceiveProps(next){
+
+    this.setState({ routes: next.routes});
+  }
+
   filter (routes) {
     if (!this.props.filter) {
       return routes
@@ -39,14 +50,14 @@ class RouteList extends Component {
 
   selectRoute = (route) => {
    
-    this.props.SetRoute(route);
+    this.props.SetRoute(route); 
 
   }
 
   render () {
     return (
       <ul className="list-group" id="myList">
-        {   this.filter(this.props.routes)
+        {   this.filter(this.state.routes)
             .map((route, i) => <Route key={i} route={route} selectRoute={this.selectRoute}></Route>)}
       </ul>
     )
@@ -64,11 +75,9 @@ class Routes extends Component {
       routeSelected: null,
     };
   }
-
-  componentDidMount() {
-
-    UploadFile(RoutesFile, this.setRoutes);
-  
+  componentWillReceiveProps(next){
+    
+    this.setState({ routes: next.routes});
   }
 
   updateSearch (inputValue) {
@@ -79,14 +88,6 @@ class Routes extends Component {
     });
   }
 
-  setRoutes = (data) => {
-
-    this.setState({
-      routes: data
-    })
-    this.props.SetRoutes(data);
-
-  }
   selectRoute = (route) => {
 
     this.setState({
@@ -103,7 +104,7 @@ class Routes extends Component {
           <div>
             <RouteFilter updateSearch={this.updateSearch.bind(this)} searchText={this.state.filter} />
             <br/>
-            <RouteList filter={this.state.filter} routes={this.props.routes} SetRoute={this.props.SetRoute}></RouteList>
+            <RouteList filter={this.state.filter} routes={Object.values(this.state.routes)} SetRoute={this.props.SetRoute}></RouteList>
           </div>
         }
       </Container>

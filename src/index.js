@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {apiMiddleware} from './store/middleware/api'
 import rootReducer from './store/reducers'
 
-import Home from './pages/containers/home';
+import Home from './home';
 import * as serviceWorker from './serviceWorker';
 
 

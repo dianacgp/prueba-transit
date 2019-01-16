@@ -6,27 +6,33 @@ export default function UploadFile (file, setState) {
   .then(response => response.text())
   .then( (text) => {
 
-    var textFile = text.split("\n");
+    var textFile = text.trim().split("\n");
 
-    let attributes = textFile.slice(0, 1);
-    attributes = attributes[0].split(',');
-    const valuesAttributes = textFile.slice(1, textFile.length)
 
-    valuesAttributes .forEach((item, i) => {
-     
+    let columns = textFile[0];
+    
+    columns = columns.split(',');
+
+    const valueColumns = textFile.slice(1, textFile.length)
+
+    valueColumns.forEach((item, i) => {
+
       var values = item.split(',');
       let object = {}
       values.forEach((value, j) => {
 
-        object[attributes[j]] = value;
+        object[columns[j].trim()] = value;
 
-      })
+      });
       data.push(object);
 
     })
-    setState(data);
+
+    if (setState !== undefined){
+      setState(data);
+    }
   })
-  .catch(error => console.log('error', error));
+  .catch(error => console.log('error upload file', error));
   
   
 }

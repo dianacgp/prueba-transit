@@ -15,3 +15,19 @@ export const SetRoute = (route) => {
       payload: route ,
   }
 };
+
+export const SetShapes = (shapes) => {
+
+  return {
+      type: actions.SET_SHAPES,
+      payload: shapes,
+  }
+};
+
+export const SetTrips = (trips) => {
+
+  return {
+      type: actions.SET_TRIPS,
+      payload: trips,
+  }
+};
