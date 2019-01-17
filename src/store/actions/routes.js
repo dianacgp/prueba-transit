@@ -8,11 +8,11 @@ export const SetRoutes = (routes) => {
   }
 };
 
-export const SetRoute = (route) => {
+export const SetRoute = (route, coordinates) => {
 
   return {
       type: actions.SET_ROUTE,
-      payload: route ,
+      payload: { route, coordinates } ,
   }
 };
 

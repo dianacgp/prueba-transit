@@ -12,7 +12,9 @@ const InitialState = Record({
 
   trips: new List(),
 
-  route: null
+  route: null,
+  
+  coordinates: null
 
 
 });
@@ -23,21 +25,19 @@ export const routes = (state = initialState, action) => {
 	switch (action.type) {
 
     case actions.SET_ROUTES: 
-      //console.log('en SET_ROUTES',  action.payload)
+
       return state.merge({
         routes: action.payload,
       });
 
-
     case actions.SET_SHAPES: 
-      //console.log('en SET_SHAPES',  action.payload)
+
       return state.merge({
         shapes: action.payload,
       });
 
-
     case actions.SET_TRIPS: 
-      //console.log('en SET_TRIPS',  action.payload)
+
       return state.merge({
         trips: action.payload,
       });
@@ -45,8 +45,10 @@ export const routes = (state = initialState, action) => {
     case actions.SET_ROUTE: 
     
       return state.merge({
-        route: action.payload,
+        route: action.payload.route,
+        coordinates: action.payload.coordinates
       });
+
 		default: 
 			return state
 	}

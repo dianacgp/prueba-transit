@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { auth, db } from './firebase';
 
 class Home extends Component {
-
  
   constructor () {
     super();
@@ -20,6 +19,7 @@ class Home extends Component {
       loading: true,
     };
   }
+
   componentDidMount() {
 
     db.onceGetRoutes().then(snapshot => {
@@ -31,12 +31,10 @@ class Home extends Component {
       }else{
         this.setState({loading: false});
 
-        //console.log(Object.values(snapshot.val()))
         this.props.SetRoutes(Object.values(snapshot.val()));
-        //Object.values(snapshot.val()).map((value => console.log('v', value)))
-  
+      
       }
-    });
+   });
   }
 
   componentWillReceiveProps(next){
@@ -64,12 +62,12 @@ class Home extends Component {
 
         shapeByTrip.map((shape, j) => {
 
-          coordinates.push({lat: shape.shape_pt_lat, log: shape.shape_pt_lon, sequence: shape.shape_pt_sequence});
+          coordinates.push({lat: parseFloat(shape.shape_pt_lat), lng: parseFloat(shape.shape_pt_lon), sequence: parseInt(shape.shape_pt_sequence)});
 
         });
 
         newRoutes[i].coordinates = coordinates;
-        //console.log('newRoutes', newRoutes)
+
         console.log(`i ${i} n ${(routes.length - 1)}`)
 
         if (i === (routes.length - 1)){
@@ -96,6 +94,7 @@ class Home extends Component {
         .then((r) => {
           if (i === (data.length - 1)){
             this.setState({loading: false});
+            this.componentDidMount();
           }
         })
         .catch(error => {
@@ -127,7 +126,6 @@ class Home extends Component {
         <h1>Loading . . .</h1>
         <p>Please wait this take may a few minutes</p>
 
-
       </div>
    )
   }
@@ -142,7 +140,7 @@ class Home extends Component {
             this.renderLoading()
           }
           <Travels/>
-          <GoogleMaps />
+          <GoogleMaps route={this.props.route} coordinates={this.props.coordinates} />
         </HomeLayout>
 
       )
@@ -152,6 +150,8 @@ class Home extends Component {
 const mapStateToProps = state => {
   return {
     routes: state.routes.routes,
+    route: state.routes.route,
+    coordinates: state.routes.coordinates,
     shapes: state.routes.shapes,
     trips: state.routes.trips,
     

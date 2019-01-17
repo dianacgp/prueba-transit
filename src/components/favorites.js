@@ -62,6 +62,7 @@ class RouteList extends Component {
   }
 
   selectRoute = (route) => {
+   
     
     db.onceGetCoordinates(route.route_id).then(snapshot => {
     
@@ -72,18 +73,15 @@ class RouteList extends Component {
 
   setFavorite = (route) => {
    
-    console.log( 'change', route.route_id)
-    db.setFavorite(route)
-    .then(r => console.log('lo cambio'))
-    .catch(e => console.log('error', e))
+    console.log( 'change', route. route_id)
+    db.setFavorite(route.route_id);
   }
 
   render () {
     return (
       <ul className="list-group" id="myList">
-        {  
-          this.filter(this.state.routes)
-          .map((route, i) => <Route key={i} route={route} selectRoute={this.selectRoute} setFavorite={this.setFavorite}></Route>)}
+        {   this.filter(this.state.routes)
+            .map((route, i) => <Route key={i} route={route} selectRoute={this.selectRoute} setFavorite={this.setFavorite}></Route>)}
       </ul>
     )
   }
@@ -121,6 +119,7 @@ class Routes extends Component {
   }
   
   render () {
+
 
     return (
       <Container>
