@@ -12,7 +12,7 @@ class Travels extends Component {
 
 	  return(
 	    <div className='col-md-6'>
-	      <h1>{ route !== null && `Recorrido ${route.route_id}`}</h1>
+	      <h1>{ route !== null ? `Recorrido ${route.route_id}` : 'Seleccione un recorrido'}</h1>
 	      <Nav/>
 	      <TabContent/>
 	    </div>

@@ -22,6 +22,9 @@ export const dbCreateRoute = ( route ) =>
   export const onceGetRoutes = () =>
     db.ref('routes').once('value')
 
+  export const GetFavoriteRoutes = () =>
+    db.ref('routes').orderByChild('favorite').equalTo(true).once('value');
+
   export const getRoutesFavorites = () =>
     db.collection('routes').where('favorite', '==', false);;
 

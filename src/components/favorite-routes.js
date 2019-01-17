@@ -7,7 +7,7 @@ import Route from './route.js'
 import RouteFilter from './route-filter.js'
 import RouteList from './route-list.js'
 
-class Routes extends Component {
+class FavoriteRoutes extends Component {
   
   constructor () {
     super();
@@ -55,7 +55,7 @@ class Routes extends Component {
 }
 const mapStateToProps = state => {
   return {
-    routes: state.routes.routes,
+    routes: state.routes.favoriteRoutes,
   }
 }
-export default connect(state => ( mapStateToProps), { SetRoute })(Routes);
+export default connect(state => ( mapStateToProps), { SetRoute })(FavoriteRoutes);

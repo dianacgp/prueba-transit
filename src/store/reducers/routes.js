@@ -7,6 +7,8 @@ const InitialState = Record({
   form_error: false,
 
   routes: new List(),
+  
+  favoriteRoutes: new List(),
 
   shapes: new List(),
 
@@ -30,17 +32,28 @@ export const routes = (state = initialState, action) => {
         routes: action.payload,
       });
 
+    //--------------------------
+    case actions.SET_FAVORITE_ROUTES: 
+
+      return state.merge({
+        favoriteRoutes: action.payload,
+      });
+    
+    //--------------------------
+
     case actions.SET_SHAPES: 
 
       return state.merge({
         shapes: action.payload,
       });
+    //--------------------------
 
     case actions.SET_TRIPS: 
 
       return state.merge({
         trips: action.payload,
       });
+    //--------------------------
 
     case actions.SET_ROUTE: 
     
@@ -48,6 +61,12 @@ export const routes = (state = initialState, action) => {
         route: action.payload.route,
         coordinates: action.payload.coordinates
       });
+    //--------------------------
+
+    case actions.SET_FAVORITE: 
+      
+      console.log('cambio', action.payload)
+      return state;
 
 		default: 
 			return state

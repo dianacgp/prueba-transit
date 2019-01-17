@@ -31,3 +31,19 @@ export const SetTrips = (trips) => {
       payload: trips,
   }
 };
+
+export const SetFavorite = (route) => {
+
+  return {
+      type: actions.SET_FAVORITE,
+      payload: route,
+  }
+};
+
+export const SetFavoriteRoutes = (routes) => {
+
+  return {
+      type: actions.SET_FAVORITE_ROUTES,
+      payload: routes,
+  }
+};

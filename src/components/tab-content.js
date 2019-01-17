@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import Routes from './routes';
+import FavoriteRoutes from './favorite-routes';
 
 function TabPane (props) {
   return (
@@ -18,7 +19,7 @@ function TabContent (props) {
       	<Routes/>
 	    </TabPane>
 	    <TabPane className="tab-pane fade" id="pills-favorites" aria-labelledby="pills-favorites-tab">
-	    	 <p>Favoritos</p>
+	    	<FavoriteRoutes/>
 	    </TabPane>
 	  </div>   
   );

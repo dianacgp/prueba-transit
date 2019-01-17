@@ -6,7 +6,7 @@ import UploadFile from './upload-file';
 import RoutesFile from './GTFS/routes.txt';
 import ShapesFile from './GTFS/shapes.txt';
 import TripsFile from './GTFS/trips.txt';
-import { SetRoutes, SetShapes, SetTrips } from './store/actions/routes'
+import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes } from './store/actions/routes'
 import { connect } from 'react-redux';
 import { auth, db } from './firebase';
 
@@ -21,15 +21,26 @@ class Home extends Component {
   }
 
   componentDidMount() {
+  
 
     db.onceGetRoutes().then(snapshot => {
       
-      if (snapshot.val() === null ){
+      if (snapshot.val() === null ) {
+
         UploadFile(RoutesFile, this.setRoutes);
         UploadFile(ShapesFile, this.setShapes);
         UploadFile(TripsFile, this.setTrips);
-      }else{
-        this.setState({loading: false});
+
+      }else {
+
+        this.setState({ loading: false });
+
+        db.GetFavoriteRoutes()
+        .then(favorites => {
+        
+          this.props.SetFavoriteRoutes(Object.values(favorites.val()));
+      
+        })
 
         this.props.SetRoutes(Object.values(snapshot.val()));
       
@@ -158,4 +169,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(state => ( mapStateToProps ), { SetRoutes,  SetShapes, SetTrips })(Home);
+export default connect(state => ( mapStateToProps ), { SetRoutes,  SetShapes, SetTrips, SetFavoriteRoutes })(Home);
