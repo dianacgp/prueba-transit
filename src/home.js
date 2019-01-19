@@ -10,59 +10,60 @@ import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps 
 import { connect } from 'react-redux';
 import { db } from './firebase';
 const defaultApiKeyGoogleMaps = "AIzaSyDWK777rQdjC_qMbmp1hp-ODuIdBW99CAg";
+
 class Home extends Component {
  
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
    
     this.state = {
-      loading: true,
+      loading: props.routes.size > 0 ? false : true,
     };
   }
 
   componentDidMount() {
-    
 
-    db.GetRoutes().then(snapshot => {
-      
-      db.GetApiKeyGoogleMaps()
-      .then(credentials => {
+    if (this.props.routes.size === 0){
+      db.GetRoutes().then(snapshot => {
+        
+        db.GetApiKeyGoogleMaps()
+        .then(credentials => {
 
-        if ( credentials.val() === null ) {
+          if ( credentials.val() === null ) {
+            db.SetCredentials(defaultApiKeyGoogleMaps);
 
-          db.SetCredentials(defaultApiKeyGoogleMaps);
+            this.props.SetApiKeyGoogleMaps(defaultApiKeyGoogleMaps);
 
-          this.props.SetApiKeyGoogleMaps(defaultApiKeyGoogleMaps);
+          }else{
 
-        }else{
+            this.props.SetApiKeyGoogleMaps(credentials.val());
 
-          this.props.SetApiKeyGoogleMaps(credentials.val());
-
-        }
-      });
-      if (snapshot.val() === null ) {
-
-        UploadFile(RoutesFile, this.setRoutes);
-        UploadFile(ShapesFile, this.setShapes);
-        UploadFile(TripsFile, this.setTrips);
-
-      }else {
-
-        this.setState({ loading: false });
-
-        db.GetFavoriteRoutes()
-        .then(favorites => {
-
-          if (favorites.val() !== null){
-            this.props.SetFavoriteRoutes(Object.values(favorites.val()));
           }
-      
-        })
+        });
+        if (snapshot.val() === null ) {
+          this.setState({ loading: true });
+          UploadFile(RoutesFile, this.setRoutes);
+          UploadFile(ShapesFile, this.setShapes);
+          UploadFile(TripsFile, this.setTrips);
 
-        this.props.SetRoutes(Object.values(snapshot.val()));
-      
-      }
-   });
+        }else {
+
+          this.setState({ loading: false });
+
+          db.GetFavoriteRoutes()
+          .then(favorites => {
+
+            if (favorites.val() !== null){
+              this.props.SetFavoriteRoutes(Object.values(favorites.val()));
+            }
+        
+          })
+
+          this.props.SetRoutes(Object.values(snapshot.val()));
+        
+        }
+     });
+    }
   }
 
   componentWillReceiveProps(next){
@@ -165,9 +166,6 @@ class Home extends Component {
       return (
        
         <HomeLayout>
-          {this.state.loading &&
-            this.renderLoading()
-          }
           <Travels/>
           
           { this.props.apiKeyGoogleMaps !== null &&

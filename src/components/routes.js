@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import Container from './container';
 import RouteFilter from './route-filter.js'
 import RouteList from './route-list.js'
+import Empty from './empty.js'
+import { connect } from 'react-redux';
+import { SetRoute, UpdateFavorite } from '../store/actions/routes'
 
-export default class Routes extends Component {
+class Routes extends Component {
   
   constructor () {
     super();
    
     this.state = {
-      routes: [],
+
       filter: '',
       routeSelected: null,
     };
   }
-  componentWillReceiveProps(next){
-    
-    this.setState({ routes: next.routes});
-  }
+
 
   updateSearch (inputValue) {
     
@@ -32,19 +32,38 @@ export default class Routes extends Component {
       route
     })
   }
+
+  getRoute = () => {
+
+    const { type, routes, favoriteRoutes } = this.props;
+
+    return type === 'routes' ? routes.toJS() : favoriteRoutes.toJS();
+  }
   
   render () {
-
+  
     return (
       <Container>
-        {this.state.routes.length > 0 &&
+        {
+          this.getRoute().length > 0 ?
           <div>
             <RouteFilter updateSearch={this.updateSearch.bind(this)} searchText={this.state.filter} />
             <br/>
-            <RouteList filter={this.state.filter} routes={this.state.routes} SetRoute={this.props.SetRoute} UpdateFavorite={this.props.UpdateFavorite}></RouteList>
+            <RouteList filter={this.state.filter} routes={this.getRoute()} SetRoute={this.props.SetRoute} UpdateFavorite={this.props.UpdateFavorite}></RouteList>
           </div>
+          :
+          <Empty/>
         }
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    routes: state.routes.routes,
+    favoriteRoutes: state.routes.favoriteRoutes,
+  }
+}
+export default connect(state => ( mapStateToProps), { SetRoute, UpdateFavorite })(Routes);
+

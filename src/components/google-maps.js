@@ -2,13 +2,16 @@
 import React, { Component } from 'react';
 
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
- 
+
+
+
 export class MapContainer extends Component {
 
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
    
     this.state = {
+      apiKey: props.apiKey,
       points: null,
     };
   }
@@ -18,7 +21,14 @@ export class MapContainer extends Component {
     if (next.coordinates !== null){
       this.setState({ points: next.coordinates });
     }
-    //console.log('next.coordinates', next.coordinates)
+    if (this.state.apiKey !== next.apiKey){
+      console.log('es diferente')
+      this.setState({ apiKey: next.apiKey });
+      configGoogle = GoogleApiWrapper({
+        apiKey: next.apiKey
+      })(MapContainer);
+    }
+
 
   }
   render() {
@@ -46,9 +56,10 @@ export class MapContainer extends Component {
     );
   }
 }
- 
-export default GoogleApiWrapper(
+
+let configGoogle = GoogleApiWrapper(
   (props) => ({
     apiKey: props.apiKey
   }
-))(MapContainer)
+))
+export default configGoogle(MapContainer);
