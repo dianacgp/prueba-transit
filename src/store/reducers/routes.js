@@ -1,13 +1,13 @@
 import * as actions from '../action-types'
 
-import { Record, List } from 'immutable';
+import Immutable, { Record, List } from 'immutable';
 
 const InitialState = Record({
   form_disabled: false,
   form_error: false,
 
   routes: new List(),
-  
+
   favoriteRoutes: new List(),
 
   shapes: new List(),
@@ -16,7 +16,9 @@ const InitialState = Record({
 
   route: null,
   
-  coordinates: null
+  coordinates: null,
+
+  apiKeyGoogleMaps: null,
 
 
 });
@@ -24,19 +26,49 @@ const initialState = new InitialState();
 
 export const routes = (state = initialState, action) => {
 	if (!(state instanceof InitialState)) return initialState.mergeDeep(state);
+
+    function SetListRoutes(route) {
+
+      let favoriteRoutes = state.favoriteRoutes;
+      let routes = state.routes;
+
+      const indexFavorites = favoriteRoutes.toMap().findKey(function(item) { if(item.get('route_id') === route.route_id) return item; });
+      const indexRoutes = routes.toMap().findKey(function(item) { if(item.get('route_id') === route.route_id) return item; });
+
+      if ( indexFavorites !== undefined ) {
+
+        favoriteRoutes =  state.favoriteRoutes.remove(indexFavorites);
+
+      }else{
+        favoriteRoutes = state.favoriteRoutes.push(Immutable.fromJS(action.payload))
+      }
+
+      if ( indexRoutes !== undefined ) {
+
+        routes = state.routes.set( indexRoutes, Immutable.fromJS(route));
+
+      }
+
+      return {
+        favoriteRoutes: favoriteRoutes,
+        routes: routes,
+      }
+  }
+
 	switch (action.type) {
+
 
     case actions.SET_ROUTES: 
 
       return state.merge({
-        routes: action.payload,
+        routes:  Immutable.fromJS(action.payload),
       });
 
     //--------------------------
     case actions.SET_FAVORITE_ROUTES: 
 
       return state.merge({
-        favoriteRoutes: action.payload,
+        favoriteRoutes:  Immutable.fromJS(action.payload),
       });
     
     //--------------------------
@@ -63,12 +95,18 @@ export const routes = (state = initialState, action) => {
       });
     //--------------------------
 
-    case actions.SET_FAVORITE: 
+    case actions.UPDATE_FAVORITE: 
       
-      console.log('cambio', action.payload)
-      return state;
+      return state.merge(SetListRoutes(action.payload));
+    //--------------------------
+
+    case actions.SET_API_KEY_GOOGLE_MAPS: 
+      
+      return state.merge({
+        apiKeyGoogleMaps: action.payload,
+      });
 
 		default: 
-			return state
+		return state
 	}
 }

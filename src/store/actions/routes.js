@@ -32,13 +32,14 @@ export const SetTrips = (trips) => {
   }
 };
 
-export const SetFavorite = (route) => {
+export const UpdateFavorite = (route) => {
 
   return {
-      type: actions.SET_FAVORITE,
+      type: actions.UPDATE_FAVORITE,
       payload: route,
   }
 };
+
 
 export const SetFavoriteRoutes = (routes) => {
 
@@ -47,3 +48,11 @@ export const SetFavoriteRoutes = (routes) => {
       payload: routes,
   }
 };
+export const SetApiKeyGoogleMaps = (apiKey) => {
+
+  return {
+      type: actions.SET_API_KEY_GOOGLE_MAPS,
+      payload: apiKey,
+  }
+};
+

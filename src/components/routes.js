@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import Container from './container';
-import { SetRoute } from '../store/actions/routes'
-import { connect } from 'react-redux';
-import { db } from '../firebase';
-import Route from './route.js'
 import RouteFilter from './route-filter.js'
 import RouteList from './route-list.js'
 
-class Routes extends Component {
+export default class Routes extends Component {
   
   constructor () {
     super();
@@ -24,7 +20,6 @@ class Routes extends Component {
   }
 
   updateSearch (inputValue) {
-    let filter = this.state.filter;
     
     this.setState({
       filter: inputValue
@@ -46,16 +41,10 @@ class Routes extends Component {
           <div>
             <RouteFilter updateSearch={this.updateSearch.bind(this)} searchText={this.state.filter} />
             <br/>
-            <RouteList filter={this.state.filter} routes={Object.values(this.state.routes)} SetRoute={this.props.SetRoute}></RouteList>
+            <RouteList filter={this.state.filter} routes={this.state.routes} SetRoute={this.props.SetRoute} UpdateFavorite={this.props.UpdateFavorite}></RouteList>
           </div>
         }
       </Container>
     );
   }
 }
-const mapStateToProps = state => {
-  return {
-    routes: state.routes.routes,
-  }
-}
-export default connect(state => ( mapStateToProps), { SetRoute })(Routes);

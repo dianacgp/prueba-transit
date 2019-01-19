@@ -1,0 +1,7 @@
+.Nav {
+  font-family: 'Montserrat', sans-serif;
+  color: #44546b;
+}
+.nav-pills .nav-link.active {
+  color: white;
+}

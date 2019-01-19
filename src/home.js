@@ -6,10 +6,10 @@ import UploadFile from './upload-file';
 import RoutesFile from './GTFS/routes.txt';
 import ShapesFile from './GTFS/shapes.txt';
 import TripsFile from './GTFS/trips.txt';
-import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes } from './store/actions/routes'
+import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps } from './store/actions/routes'
 import { connect } from 'react-redux';
-import { auth, db } from './firebase';
-
+import { db } from './firebase';
+const defaultApiKeyGoogleMaps = "AIzaSyDWK777rQdjC_qMbmp1hp-ODuIdBW99CAg";
 class Home extends Component {
  
   constructor () {
@@ -21,10 +21,25 @@ class Home extends Component {
   }
 
   componentDidMount() {
-  
+    
 
-    db.onceGetRoutes().then(snapshot => {
+    db.GetRoutes().then(snapshot => {
       
+      db.GetApiKeyGoogleMaps()
+      .then(credentials => {
+
+        if ( credentials.val() === null ) {
+
+          db.SetCredentials(defaultApiKeyGoogleMaps);
+
+          this.props.SetApiKeyGoogleMaps(defaultApiKeyGoogleMaps);
+
+        }else{
+
+          this.props.SetApiKeyGoogleMaps(credentials.val());
+
+        }
+      });
       if (snapshot.val() === null ) {
 
         UploadFile(RoutesFile, this.setRoutes);
@@ -37,8 +52,10 @@ class Home extends Component {
 
         db.GetFavoriteRoutes()
         .then(favorites => {
-        
-          this.props.SetFavoriteRoutes(Object.values(favorites.val()));
+
+          if (favorites.val() !== null){
+            this.props.SetFavoriteRoutes(Object.values(favorites.val()));
+          }
       
         })
 
@@ -54,7 +71,7 @@ class Home extends Component {
 
     let newRoutes = routes;
 
-    if ( routes.length > 0 && shapes.length > 0 && trips.length > 0  ) {
+    if (routes &&  shapes && trips && routes.length > 0 && shapes.length > 0 && trips.length > 0  ) {
 
       routes.map((route, i) => {
       
@@ -98,10 +115,10 @@ class Home extends Component {
     this.props.SetRoutes(data);
 
     data.map((route, i) => {
-      db.dbCreateRoute(route)
+      db.CreateRoute(route)
       .then((r) => {
 
-        db.dbCreateCoordinatesByRoute(route.route_id, route.coordinates)
+        db.CreateCoordinatesByRoute(route.route_id, route.coordinates)
         .then((r) => {
           if (i === (data.length - 1)){
             this.setState({loading: false});
@@ -141,6 +158,7 @@ class Home extends Component {
    )
   }
   render() {
+
     if (this.state.loading){
       return this.renderLoading()
     }else{
@@ -151,7 +169,10 @@ class Home extends Component {
             this.renderLoading()
           }
           <Travels/>
-          <GoogleMaps route={this.props.route} coordinates={this.props.coordinates} />
+          
+          { this.props.apiKeyGoogleMaps !== null &&
+            <GoogleMaps route={this.props.route} coordinates={this.props.coordinates} apiKey={this.props.apiKeyGoogleMaps} />
+          }
         </HomeLayout>
 
       )
@@ -165,8 +186,9 @@ const mapStateToProps = state => {
     coordinates: state.routes.coordinates,
     shapes: state.routes.shapes,
     trips: state.routes.trips,
+    apiKeyGoogleMaps: state.routes.apiKeyGoogleMaps
     
   }
 }
 
-export default connect(state => ( mapStateToProps ), { SetRoutes,  SetShapes, SetTrips, SetFavoriteRoutes })(Home);
+export default connect(state => ( mapStateToProps ), { SetRoutes,  SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps })(Home);

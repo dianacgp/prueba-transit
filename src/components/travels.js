@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import Nav from './nav';
-import TabContent from './tab-content'
+import Nav from './nav/nav';
+import TabContent from './tab-content/tab-content'
 import { connect } from 'react-redux';
 
 class Travels extends Component {

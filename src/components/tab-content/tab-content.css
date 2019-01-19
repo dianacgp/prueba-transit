@@ -1,0 +1,24 @@
+.Tab {
+  font-family: 'Montserrat', sans-serif;
+  color: #44546b;
+  white-space: normal;
+  background: pink
+}
+
+.Route:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+
+.Route-title {
+  font-family: 'Montserrat', sans-serif;
+  color: #44546b;
+  white-space: normal;
+
+}
+.Route-badge {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  white-space: normal;
+  font-size: 15px;
+  padding: 10px 20px;
+}

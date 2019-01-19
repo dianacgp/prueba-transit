@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { SetRoute } from '../store/actions/routes'
 import { db } from '../firebase';
-import Route from './route.js'
+import Route from './route/route.js'
 
 export default class RouteList extends Component {
   
@@ -29,7 +28,7 @@ export default class RouteList extends Component {
 
   selectRoute = (route) => {
     
-    db.onceGetCoordinates(route.route_id).then(snapshot => {
+    db.GetCoordinates(route.route_id).then(snapshot => {
     
       this.props.SetRoute(route, snapshot.val().coordinates); 
   
@@ -37,11 +36,19 @@ export default class RouteList extends Component {
   }
 
   render () {
+
     return (
       <ul className="list-group" id="myList">
         {  
           this.filter(this.state.routes)
-          .map((route, i) => <Route key={i} route={route} selectRoute={this.selectRoute}></Route>)}
+          .map((route, i) => 
+            <Route 
+              key={i} 
+              route={route} 
+              selectRoute={this.selectRoute} 
+              UpdateFavorite={this.props.UpdateFavorite}
+            />)
+          }
       </ul>
     )
   }
