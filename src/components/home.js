@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import HomeLayout from './components/home-layout';
-import Travels from './components/travels';
-import GoogleMaps from './components/google-maps';
-import UploadFile from './upload-file';
-import RoutesFile from './GTFS/routes.txt';
-import ShapesFile from './GTFS/shapes.txt';
-import TripsFile from './GTFS/trips.txt';
-import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps } from './store/actions/routes'
+import HomeLayout from './home-layout';
+import Travels from './travels';
+import GoogleMaps from './google-maps';
+import UploadFile from '../upload-file';
+import RoutesFile from '../GTFS/routes.txt';
+import ShapesFile from '../GTFS/shapes.txt';
+import TripsFile from '../GTFS/trips.txt';
+import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps } from '../store/actions/routes'
 import { connect } from 'react-redux';
-import { db } from './firebase';
+import { db } from '../firebase';
 const defaultApiKeyGoogleMaps = "AIzaSyDWK777rQdjC_qMbmp1hp-ODuIdBW99CAg";
 
 class Home extends Component {
@@ -152,7 +152,7 @@ class Home extends Component {
     return (
       <div className="container">
      
-        <h1>Loading . . .</h1>
+        <h1><i className="fa fa-spinner fa-spin"></i>Loading . . .</h1>
         <p>Please wait this take may a few minutes</p>
 
       </div>

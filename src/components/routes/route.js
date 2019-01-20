@@ -67,16 +67,16 @@ export default class Route extends Component {
         onClick={this.markRoute} 
         className="list-group-item Route">
         <div className="row">
-          <div className="col-md-9">
-            <span className="badge badge-pill badge-primary mr-2 Route-badge" style={{backgroundColor: `#${route.route_color}`}}>{route.route_id}</span><span className="Route-title">{route.route_long_name}</span>
+          <div className="col-md-10">
+            <span className="badge badge-pill badge-primary mr-2 Route-badge" style={{backgroundColor: `#${route.route_color}`}}><i className="fa fa-bus"></i>{route.route_id}</span><span className="Route-title">{route.route_long_name}</span>
           </div>
-          <div className="col-md-3">
-            <button 
+          <div className="col-md-2">
+            <span 
               id="button-route"
               onClick={this.updateFavorite} 
-              type="button" 
-              className={!route.favorite ? "btn btn-light" :  "btn btn-primary"}>Favorito
-            </button>
+              >
+              <i className={`fa Route-fa fa-star Route-favorite ${route.favorite && `active` }`}></i>
+            </span>
           </div>
         </div>
       </li>

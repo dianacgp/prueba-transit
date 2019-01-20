@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { db } from '../firebase';
-import Route from './route/route.js'
+import { db } from '../../firebase';
+import Route from './route.js'
 
 export default class RouteList extends Component {
   

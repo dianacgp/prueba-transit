@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Container from './container';
+import Container from '../container';
 import RouteFilter from './route-filter.js'
 import RouteList from './route-list.js'
-import Empty from './empty.js'
+import Empty from '../empty.js'
 import { connect } from 'react-redux';
-import { SetRoute, UpdateFavorite } from '../store/actions/routes'
+import { SetRoute, UpdateFavorite } from '../../store/actions/routes'
 
 class Routes extends Component {
   

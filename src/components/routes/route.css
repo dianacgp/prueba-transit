@@ -20,4 +20,19 @@
   white-space: normal;
   font-size: 15px;
   padding: 10px 20px;
+  border-radius: 0;
+  width: 100px;
 }
+
+li#route .fa.Route-favorite {
+  font-size: 30px;
+  color: #F2F2F2;
+}
+li#route .fa.Route-favorite:hover {
+  color: #F7A92A;
+}
+
+li#route .fa.Route-favorite.active {
+  color: #F7A92A;
+}
+

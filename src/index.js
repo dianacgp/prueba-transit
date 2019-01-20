@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import {apiMiddleware} from './store/middleware/api'
 import rootReducer from './store/reducers'
 
-import Route from './route';
+import Router from './components/router/router';
 import * as serviceWorker from './serviceWorker';
 
 
@@ -15,7 +15,7 @@ const store = createStore(rootReducer, applyMiddleware(apiMiddleware))
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Route />
+		<Router />
 	</Provider>,
 	document.getElementById('root'))
 

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import Nav from './nav/nav';
+import Tab from './tab/tab';
 import TabContent from './tab-content/tab-content'
 import { connect } from 'react-redux';
 
@@ -12,8 +12,8 @@ class Travels extends Component {
 
 	  return(
 	    <div className='col-md-6'>
-	      <h1>{ route !== null ? `Recorrido ${route.route_id}` : 'Seleccione un recorrido'}</h1>
-	      <Nav/>
+	      <h1>{ route !== null ? `Route ${route.route_id}` : 'Select a route'}</h1>
+	      <Tab/>
 	      <TabContent/>
 	    </div>
 	  );
