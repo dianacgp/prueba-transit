@@ -20,6 +20,8 @@ const InitialState = Record({
 
   apiKeyGoogleMaps: null,
 
+  textSearchRoute: '',
+
 
 });
 const initialState = new InitialState();
@@ -104,6 +106,12 @@ export const routes = (state = initialState, action) => {
       
       return state.merge({
         apiKeyGoogleMaps: action.payload,
+      });
+    //-------------------------
+    case actions.SEARCH_ROUTE: 
+      
+      return state.merge({
+        textSearchRoute: action.payload,
       });
 
 		default: 

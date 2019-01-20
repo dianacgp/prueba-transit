@@ -55,4 +55,11 @@ export const SetApiKeyGoogleMaps = (apiKey) => {
       payload: apiKey,
   }
 };
+export const SearchRoute = (search) => {
+
+  return {
+      type: actions.SEARCH_ROUTE,
+      payload: search,
+  }
+};
 

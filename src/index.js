@@ -7,15 +7,14 @@ import {Provider} from 'react-redux'
 import {apiMiddleware} from './store/middleware/api'
 import rootReducer from './store/reducers'
 
-import Router from './components/router/router';
+import App from './components/app';
 import * as serviceWorker from './serviceWorker';
-
 
 const store = createStore(rootReducer, applyMiddleware(apiMiddleware))
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router />
+		<App />
 	</Provider>,
 	document.getElementById('root'))
 
