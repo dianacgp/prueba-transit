@@ -1,0 +1,43 @@
+.Route {
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 0px;
+}
+
+.Route:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+.Route.active {
+  box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+
+.Route-title {
+  color: #44546b;
+  white-space: normal;
+
+}
+.Route-badge {
+  color: white;
+  white-space: normal;
+  font-size: 12px;
+  padding: 10px 20px;
+  border-radius: 0;
+  width: 120px;
+}
+li#route:first-child{
+  border-radius: 0;
+  border-top-width: 0;
+}
+li#route .fa.Route-favorite {
+  font-size: 30px;
+  color: #F2F2F2;
+}
+li#route .fa.Route-favorite:hover {
+  color: #F7A92A;
+}
+
+li#route .fa.Route-favorite.active {
+  color: #F7A92A;
+}
+

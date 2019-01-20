@@ -1,0 +1,16 @@
+.nav-pills .nav-link.active {
+  color: #BA003B;
+  font-weight: bolder;
+  background-color: white;
+}
+
+ul#pills-tab .nav-link  {
+  border-radius: 0;
+  color: black;
+}
+
+ul#pills-tab .nav-link.active {
+	color: #f08119;
+	font-weight: bold;
+
+}
