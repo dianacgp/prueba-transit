@@ -1,6 +1,6 @@
 import * as actions from '../action-types'
 
-import Immutable, { Record, List } from 'immutable';
+import { Record, List } from 'immutable';
 
 const InitialState = Record({
   form_disabled: false,

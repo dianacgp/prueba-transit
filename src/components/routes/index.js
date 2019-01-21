@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import RouteList from './list.js'
-import RouteFilter from './filter.js'
 import Empty from '../empty'
 import { connect } from 'react-redux';
 import { SetRoute, UpdateFavorite } from '../../store/actions/routes'
@@ -36,9 +35,9 @@ class Routes extends Component {
   getRoute = () => {
 
     const { type, routes, favoriteRoutes } = this.props;
-
+  
     if (routes && favoriteRoutes) {
-      return type === 'routes' ? routes.toJS() : favoriteRoutes.toJS();
+      return type === 'routes' ? routes : favoriteRoutes;
 
     }else{
       return null;
@@ -50,10 +49,9 @@ class Routes extends Component {
     return (
       <div>
         {
-           this.getRoute() !== null && this.getRoute().length > 0 ?
+          this.getRoute() !== null && this.getRoute().size > 0 ?
 
             <RouteList filter={this.props.textSearchRoute} routes={this.getRoute()} SetRoute={this.props.SetRoute} UpdateFavorite={this.props.UpdateFavorite}></RouteList>
-
 
           :
           <Empty/>

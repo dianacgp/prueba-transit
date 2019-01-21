@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMaps from '../google-maps';
-import UploadFile from '../../upload-file';
+import ReadFile from '../../read-file';
 import RoutesFile from '../../GTFS/routes.txt';
 import ShapesFile from '../../GTFS/shapes.txt';
 import TripsFile from '../../GTFS/trips.txt';
@@ -67,9 +67,17 @@ class Home extends Component {
    
     this.state = {
       loading: props.routes.size > 0 ? false : true,
+      hasError: false
 
     };
 
+  }
+
+  componentDidCatch(error, info) {
+    // Display fallback UI
+    this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+    console.log('dioo un error', error)
   }
 
   componentDidMount() {
@@ -82,9 +90,9 @@ class Home extends Component {
 
         if (snapshot.val() === null ) {
           this.setState({ loading: true });
-          UploadFile(RoutesFile, this.setRoutes);
-          UploadFile(ShapesFile, this.setShapes);
-          UploadFile(TripsFile, this.setTrips);
+          ReadFile(RoutesFile, this.setRoutes);
+          ReadFile(ShapesFile, this.setShapes);
+          ReadFile(TripsFile, this.setTrips);
 
         }else {
 
@@ -218,24 +226,49 @@ class Home extends Component {
       </div>
    )
   }
+  reload = ( event ) => {
+    
+    console.log('dddd')
+    window.location.reload()
+   
+    event.preventDefault();
+
+  }
+  rendeError = () => {
+
+    return (
+      <div className="container">
+     
+        <h1>Something went wrong. Please, try again</h1>
+        <div className="col-sm-10">
+          <button onClick={this.reload} className="btn btn-primary">Ok</button>
+        </div>
+
+      </div>
+   )
+  }
 
   render() {
-
-    if (this.state.loading)
-    {
-      return this.renderLoading()
-    } 
-    else
+    if (this.state.hasError){
+      return this.renderError()
+    }
+    else{
+      if (this.state.loading)
       {
-        return (
-          <HomeLayout>
-            <Routes route={this.props.route} SearchRoute={this.props.SearchRoute} />
-            { this.props.apiKeyGoogleMaps !== null &&
-              <GoogleMaps route={this.props.route} coordinates={this.props.coordinates} apiKey={this.props.apiKeyGoogleMaps} />
-            }
-          </HomeLayout>
-        )
+        return this.renderLoading()
+      }else
+        {
+          return (
+            <HomeLayout>
+              <Routes route={this.props.route} SearchRoute={this.props.SearchRoute} />
+              { this.props.apiKeyGoogleMaps !== null &&
+                <GoogleMaps route={this.props.route} coordinates={this.props.coordinates} apiKey={this.props.apiKeyGoogleMaps} />
+              }
+            </HomeLayout>
+          )
+        }
       }
+    
   }
 }
 const mapStateToProps = state => {
