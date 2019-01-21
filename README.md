@@ -7,6 +7,7 @@
   - Una vez leídos los archivos itere las rutas y por cada ruta guarde las coordenadas
   - Utilicé firebase 'Realtime database' con permisos de escritura y lectura.
   - En firebase guardé las rutas y las coordenadas por ruta.
+  - Los favoritos se guardan en Firebase.
  
 ### Instalación 
 
