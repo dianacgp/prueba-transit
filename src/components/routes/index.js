@@ -37,17 +37,20 @@ class Routes extends Component {
 
     const { type, routes, favoriteRoutes } = this.props;
 
-    return type === 'routes' ? routes.toJS() : favoriteRoutes.toJS();
+    if (routes && favoriteRoutes) {
+      return type === 'routes' ? routes.toJS() : favoriteRoutes.toJS();
+
+    }else{
+      return null;
+    }
   }
   
   render () {
   
     return (
-      <div 
-       //className='container'
-        >
+      <div>
         {
-          this.getRoute().length > 0 ?
+           this.getRoute() !== null && this.getRoute().length > 0 ?
 
             <RouteList filter={this.props.textSearchRoute} routes={this.getRoute()} SetRoute={this.props.SetRoute} UpdateFavorite={this.props.UpdateFavorite}></RouteList>
 
