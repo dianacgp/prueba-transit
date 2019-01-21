@@ -52,10 +52,9 @@ class Settings extends Component {
     .then(() => { 
       this.setState({status: 'saved'})
       this.props.SetApiKeyGoogleMaps(apiKeyGoogleMaps);
+      window.location.reload()
     })
     .catch(() => {this.setState({status: 'error'})});
-
-   
 
     event.preventDefault();
   }
@@ -65,6 +64,7 @@ class Settings extends Component {
 
     const isInvalid = apiKeyGoogleMaps === null || apiKeyGoogleMaps.trim().length === 0;
 
+    console.log('apiKeyGoogleMaps', apiKeyGoogleMaps)
     return (
      
       <div className="container container-view">

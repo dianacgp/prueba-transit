@@ -34,20 +34,20 @@ export const routes = (state = initialState, action) => {
       let favoriteRoutes = state.favoriteRoutes;
       let routes = state.routes;
 
-      const indexFavorites = favoriteRoutes.toMap().findKey(function(item) { if(item.get('route_id') === route.route_id) return item; });
-      const indexRoutes = routes.toMap().findKey(function(item) { if(item.get('route_id') === route.route_id) return item; });
+      const indexFavorites = favoriteRoutes.toMap().findKey(function(item) { if(item.route_id === route.route_id) return item; });
+      const indexRoutes = routes.toMap().findKey(function(item) { if(item.route_id === route.route_id) return item; });
 
       if ( indexFavorites !== undefined ) {
 
         favoriteRoutes =  state.favoriteRoutes.remove(indexFavorites);
 
       }else{
-        favoriteRoutes = state.favoriteRoutes.push(Immutable.fromJS(action.payload))
+        favoriteRoutes = state.favoriteRoutes.push(action.payload)
       }
 
       if ( indexRoutes !== undefined ) {
 
-        routes = state.routes.set( indexRoutes, Immutable.fromJS(route));
+        routes = state.routes.set( indexRoutes, route);
 
       }
 
@@ -63,14 +63,14 @@ export const routes = (state = initialState, action) => {
     case actions.SET_ROUTES: 
 
       return state.merge({
-        routes:  Immutable.fromJS(action.payload),
+        routes:  action.payload,
       });
 
     //--------------------------
     case actions.SET_FAVORITE_ROUTES: 
 
       return state.merge({
-        favoriteRoutes:  Immutable.fromJS(action.payload),
+        favoriteRoutes:  action.payload,
       });
     
     //--------------------------

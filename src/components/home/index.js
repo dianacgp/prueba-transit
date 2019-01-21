@@ -10,7 +10,7 @@ import { SetRoutes, SetShapes, SetTrips, SetFavoriteRoutes, SetApiKeyGoogleMaps,
 import { connect } from 'react-redux';
 import { db } from '../../firebase';
 import RouteFilter from '../routes/filter';
-
+let upload = false;
 const defaultApiKeyGoogleMaps = "AIzaSyDWK777rQdjC_qMbmp1hp-ODuIdBW99CAg";
 
 function HomeLayout (props) {
@@ -67,29 +67,19 @@ class Home extends Component {
    
     this.state = {
       loading: props.routes.size > 0 ? false : true,
+
     };
-    console.log('rops.routes.size ', props.routes.size )
+
   }
 
   componentDidMount() {
 
-    if (this.props.routes.size === 0){
+    this.getApiKeyGoogleMaps();
+
+    if ( this.props.routes.size === 0 ){
+
       db.GetRoutes().then(snapshot => {
-        console.log('snapshot', snapshot.val())
-        db.GetApiKeyGoogleMaps()
-        .then(credentials => {
 
-          if ( credentials.val() === null ) {
-            db.SetCredentials(defaultApiKeyGoogleMaps);
-
-            this.props.SetApiKeyGoogleMaps(defaultApiKeyGoogleMaps);
-
-          }else{
-
-            this.props.SetApiKeyGoogleMaps(credentials.val());
-
-          }
-        });
         if (snapshot.val() === null ) {
           this.setState({ loading: true });
           UploadFile(RoutesFile, this.setRoutes);
@@ -116,19 +106,33 @@ class Home extends Component {
     }
   }
 
+  getApiKeyGoogleMaps =  () => {
+
+    db.GetApiKeyGoogleMaps()
+    .then(credentials => {
+
+      if ( credentials.val() === null ) {
+        db.SetCredentials(defaultApiKeyGoogleMaps);
+
+        this.props.SetApiKeyGoogleMaps(defaultApiKeyGoogleMaps);
+
+      }else{
+
+        this.props.SetApiKeyGoogleMaps(credentials.val());
+      }
+    });
+  }
+        
+
   componentWillReceiveProps(next){
 
     const { routes, shapes, trips } = next;
 
     let newRoutes = routes;
 
-    console.log('next routes', next.routes)
-    console.log('next shapes', next.shapes)
-    console.log('next trips', next.trips)
 
-
-    if (routes &&  shapes && trips && routes.length > 0 && shapes.length > 0 && trips.length > 0  ) {
-      console.log(' se mete')
+    if ( upload === false && routes && routes.length > 0 && shapes && trips && routes.length > 0 && shapes.length > 0 && trips.length > 0  ) {
+      upload = true;
       routes.map((route, i) => {
       
         let tripByRoute = trips.filter( trip =>   trip.route_id === route.route_id )
@@ -152,15 +156,12 @@ class Home extends Component {
 
         newRoutes[i].coordinates = coordinates;
 
-        console.log(`i ${i} n ${(routes.length - 1)}`)
 
         if (i === (routes.length - 1)){
           this.saveRoutes(newRoutes)
         }
     
       });
-    }else{
-      console.log('nunca se mete')
     }
   }
 
@@ -179,7 +180,9 @@ class Home extends Component {
         db.CreateCoordinatesByRoute(route.route_id, route.coordinates)
         .then((r) => {
           if (i === (data.length - 1)){
+
             this.setState({loading: false});
+            upload = false;
             this.componentDidMount();
           }
         })
